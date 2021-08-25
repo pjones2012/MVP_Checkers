@@ -48,14 +48,26 @@ const Board = (props) => {
 
     //implement queen moves
   }
+  props.usePort.on('PeiceSelected', (data) => {
+    setCurrentPeice( [data.position[0], data.position[1]] );
+    setTurnStatus( 'movePiece' );
+  });
+
+  props.usePort.on('PeiceMoved', (data) => {
+    setBoardStatus(data.board);
+    setTurnStatus( 'whichPiece');
+    props.updatePlayer(props.player === 'r'? 'b':'r');
+  });
 
   var clickSquare = (row,col) => {
-    if (turnStatus === 'whichPiece' && boardStatus[row][col] === props.player){
-      //console.log('I see you row ', row , 'and col ', col );
+    if (props.user !== props.player) {
+      console.log('Please wait your turn');
+    } else if (turnStatus === 'whichPiece' && boardStatus[row][col] === props.player){
+      console.log('sending info');
       findAvailableMoves(row, col);
-      setCurrentPeice( [row, col] );
-      setTurnStatus( 'movePiece' );
-      //console.log('why is this info lost ', availableMoves);
+      props.usePort.emit('PeiceSelected', {
+        position: [row, col]
+      })
     } else if (turnStatus === 'movePiece') {
       //move peice
       console.log('I see you row ', row , 'and col ', col );
@@ -68,9 +80,9 @@ const Board = (props) => {
           newBoard[currentPeice[0]][currentPeice[1]] = null;
           newBoard[row][col] = props.player;
           console.log('did we update the damn board? ', newBoard);
-          setBoardStatus(newBoard);
-          setTurnStatus( 'whichPiece');
-          props.updatePlayer(props.player === 'r'? 'b':'r');
+          props.usePort.emit('PeiceMoved', {
+            board: newBoard
+          })
         }
       }
     } else {
@@ -91,7 +103,7 @@ const Board = (props) => {
                              row={j} col={i}
                              clickHandler={clickSquare}
                              turn={turnStatus}
-                             color='black'
+                             color='grey'
                              playerFill={boardStatus[j][i]?boardStatus[j][i]:null}/>;
             } else if ( (j + i) % 2 === 0) {
               return <Square key={`${i}and${j}`}
