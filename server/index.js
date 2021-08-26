@@ -24,11 +24,11 @@ io.on('connection', async socket => {
     let roomNum = Math.ceil(numSockets.length/2);
     if ( numSockets.length % 2 === 1) {
       socket.join(`Room ${roomNum}`)
-      // console.log('first log', socket.id);
+      console.log('first log', socket.id);
       socket.emit('PlayerAssign', { assign: 'Player 1'});
     } else if (numSockets.length % 2 === 0) {
       socket.join(`Room ${roomNum}`)
-      // console.log('first log', roomNum);
+      console.log('second log', socket.id);
       socket.emit('PlayerAssign', { assign: 'Player 2'});
     }
   });
