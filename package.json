@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/index.js",
     "devStart": "nodemon server/index.js",
-    "devBuild": "npx webpack --watch --mode development --config webpack.config.js"
+    "devBuild": "npx webpack --watch --mode development --config webpack.config.js",
+    "build": "npx webpack --mode development --config webpack.config.js"
   },
   "author": "Portia Jones",
   "license": "ISC",
