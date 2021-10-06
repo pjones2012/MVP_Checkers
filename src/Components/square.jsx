@@ -20,7 +20,7 @@ const Square = (props) => {
   return (
     <span className='square'
           onClick={iWasClicked}
-          style={{backgroundColor: props.color, display: 'inline-block', width: '9vw', height: '9vw'}}>
+          style={{backgroundColor: props.color, display: 'inline-block', width: '9vw', height: '9vw', borderStyle: props.selected?'solid':'none', borderColor: 'yellow'}}>
       {fillStatus()}
     </span>
   );

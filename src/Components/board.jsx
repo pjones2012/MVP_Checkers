@@ -6,7 +6,7 @@ const Board = (props) => {
   const seedArray = new Array(8).fill(0);
   const [availableMoves, setAvailableMoves] = useState([]);
   const [turnStatus, setTurnStatus] = useState('whichPiece');
-  const [currentPeice, setCurrentPeice] = useState(null);
+  const [currentPeice, setCurrentPeice] = useState([]);
   const [boardStatus, setBoardStatus] = useState([
     [null,'r',null,'r',null,'r',null,'r'],
     ['r',null,'r',null,'r',null,'r',null],
@@ -56,6 +56,7 @@ const Board = (props) => {
   props.usePort.on('PeiceMoved', (data) => {
     setBoardStatus(data.board);
     setTurnStatus( 'whichPiece');
+    setCurrentPeice( [] );
     props.updatePlayer(props.player === 'r'? 'b':'r');
   });
 
@@ -63,7 +64,7 @@ const Board = (props) => {
     if (props.user !== props.player) {
       console.log('Please wait your turn');
     } else if (turnStatus === 'whichPiece' && boardStatus[row][col] === props.player){
-      console.log('sending info');
+      console.log('sending info', [row, col]);
       findAvailableMoves(row, col);
       props.usePort.emit('PeiceSelected', {
         position: [row, col]
@@ -79,7 +80,7 @@ const Board = (props) => {
           //console.log('okay so did we make it?!');
           newBoard[currentPeice[0]][currentPeice[1]] = null;
           newBoard[row][col] = props.player;
-          console.log('did we update the damn board? ', newBoard);
+          console.log('did we update the board? ', newBoard);
           props.usePort.emit('PeiceMoved', {
             board: newBoard
           })
@@ -104,6 +105,7 @@ const Board = (props) => {
                              clickHandler={clickSquare}
                              turn={turnStatus}
                              color='grey'
+                             selected = {(currentPeice[1] === i && currentPeice[0] === j)? true:false}
                              playerFill={boardStatus[j][i]?boardStatus[j][i]:null}/>;
             } else if ( (j + i) % 2 === 0) {
               return <Square key={`${i}and${j}`}
@@ -111,6 +113,7 @@ const Board = (props) => {
                              clickHandler={clickSquare}
                              turn={turnStatus}
                              color='white'
+                             selected = {(currentPeice[1] === i && currentPeice[0] === j)? true:false}
                              playerFill={boardStatus[j][i]?boardStatus[j][i]:null}/>;
             }
           })}
