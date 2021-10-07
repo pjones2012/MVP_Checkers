@@ -25,7 +25,10 @@ const Board = (props) => {
     var move1space = [[thisRow-1,thisCol-1],[thisRow-1,thisCol+1],[thisRow+1,thisCol-1],[thisRow+1,thisCol+1]];
     for (var spot of move1space){
       if (boardStatus[spot[0]][spot[1]] === null){
-        moves.push(spot);
+        //if red and row logic okay or if black and row logic okay
+        if ( (props.player === 'r' && spot[0] > thisRow )  || ( props.player === 'b' && spot[0] < thisRow) ) {
+          moves.push(spot);
+        }
       }
     }
     //implement that we cannot go backwards!
