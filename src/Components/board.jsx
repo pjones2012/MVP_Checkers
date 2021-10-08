@@ -83,6 +83,10 @@ const Board = (props) => {
           //console.log('okay so did we make it?!');
           newBoard[currentPeice[0]][currentPeice[1]] = null;
           newBoard[row][col] = props.player;
+          if (Math.abs(currentPeice[0]-row) > 1){
+            console.log('attempting to jump');
+            newBoard[currentPeice[0] - (currentPeice[0]-row)/2][currentPeice[1] - (currentPeice[1]-col)/2] = null;
+          }
           console.log('did we update the board? ', newBoard);
           props.usePort.emit('PeiceMoved', {
             board: newBoard

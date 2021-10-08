@@ -20,7 +20,7 @@ const App = (props) => {
 
   useEffect(()=> {
     props.port.emit('PlayerAssign', {});
-  })
+  }, props.port)
 
   return (
     <div>
