@@ -1,4 +1,5 @@
 const express = require('express');
+const db = require('../DBMS');
 const app = express();
 app.use(express.json());
 
@@ -19,17 +20,18 @@ io.on('connection', async socket => {
   // if # of sockets is odd make player 1 in new room
   // if # socketes is even make player 2 in room last room
   var numSockets = await io.fetchSockets();
+  var leaderboard = await db.getLeaders();
   // emit to that player the # player they are and the room they are in
   socket.on('PlayerAssign', () => {
     let roomNum = Math.ceil(numSockets.length/2);
     if ( numSockets.length % 2 === 1) {
       socket.join(`Room ${roomNum}`)
       console.log('first log', socket.id);
-      socket.emit('PlayerAssign', { assign: 'Player 1'});
+      socket.emit('PlayerAssign', { assign: 'Player 1', leaders: leaderboard});
     } else if (numSockets.length % 2 === 0) {
       socket.join(`Room ${roomNum}`)
       console.log('second log', socket.id);
-      socket.emit('PlayerAssign', { assign: 'Player 2'});
+      socket.emit('PlayerAssign', { assign: 'Player 2', leaders: leaderboard});
     }
   });
 

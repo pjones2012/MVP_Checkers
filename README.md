@@ -22,8 +22,4 @@ Socket.io
 
 
 # Contributors -
-1) Portia Jones - Creator of Overview Widget - https://github.com/pjones2012
-
-
-# Acknowledgements -
-    The contributors of this project would like to thank the various staff at Hack Reactor for their support in helping us gain the knowledge to develope such an amazing project. Particularly our project lead Christian Peterson, Teachers Tom Chandler and Kim Kost, Mental and Emotional cheerleader Allison Dillion. We would also like to thank Jack Pronske, and Joseph Martin.
+1) Portia Jones - https://github.com/pjones2012

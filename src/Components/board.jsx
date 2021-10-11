@@ -68,7 +68,7 @@ const Board = (props) => {
       console.log('Please wait your turn');
     } else if (turnStatus === 'whichPiece' && boardStatus[row][col] === props.player){
       console.log('sending info', [row, col]);
-      findAvailableMoves(row, col);
+      findAvailableMoves(row, col,boardStatus[row][col]);
       props.usePort.emit('PeiceSelected', {
         position: [row, col]
       })
