@@ -27,20 +27,22 @@ io.on('connection', async socket => {
     if ( numSockets.length % 2 === 1) {
       socket.join(`Room ${roomNum}`)
       console.log('first log', socket.id);
-      socket.emit('PlayerAssign', { assign: 'Player 1', leaders: leaderboard});
+      socket.emit('PlayerAssign', { assign: 'Player 1', leaders: leaderboard, room: roomNum});
     } else if (numSockets.length % 2 === 0) {
       socket.join(`Room ${roomNum}`)
       console.log('second log', socket.id);
-      socket.emit('PlayerAssign', { assign: 'Player 2', leaders: leaderboard});
+      socket.emit('PlayerAssign', { assign: 'Player 2', leaders: leaderboard, room: roomNum});
     }
   });
 
   socket.on('PeiceSelected', (data)=>{
-    io.sockets.emit('PeiceSelected', data);
+    //console.log(data);
+    io.in(`Room ${data.room}`).emit('PeiceSelected', data);
   });
 
   socket.on('PeiceMoved', (data)=>{
-    io.sockets.emit('PeiceMoved', data);
+    //console.log(data);
+    io.in(`Room ${data.room}`).emit('PeiceMoved', data);
   });
 });
 

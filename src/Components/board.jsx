@@ -70,7 +70,8 @@ const Board = (props) => {
       console.log('sending info', [row, col]);
       findAvailableMoves(row, col,boardStatus[row][col]);
       props.usePort.emit('PeiceSelected', {
-        position: [row, col]
+        position: [row, col],
+        room: props.useRoom
       })
     } else if (turnStatus === 'movePiece') {
       //move peice
@@ -89,7 +90,8 @@ const Board = (props) => {
           }
           console.log('did we update the board? ', newBoard);
           props.usePort.emit('PeiceMoved', {
-            board: newBoard
+            board: newBoard,
+            room: props.useRoom
           })
         }
       }

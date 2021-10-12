@@ -2,14 +2,14 @@ import React, { useState, useEffect}from 'react';
 import Board from './Components/board.jsx';
 import LeaderBoard from './Components/leaderBoard.jsx';
 import { AppBar, Box, Button , Typography, Toolbar} from '@mui/material';
-//import { io } from 'socket.io-client';
-
 
 const App = (props) => {
 
   const [currentTurn, setTurn] = useState('r');
   const [user, setUser] = useState(null);
   const [leaders, setLeaders] = useState([{user_name: null, wins: 0}]);
+  const [room, setRoom] = useState(null);
+
   props.port.on('PlayerAssign', (data) => {
     //console.log('are we getting any assignments here?', data.assign);
     if (data.assign === 'Player 1'){
@@ -18,7 +18,7 @@ const App = (props) => {
       setUser('b');
     }
     setLeaders(data.leaders.rows);
-    console.log(data.leaders.rows);
+    setRoom(data.room);
   });
 
   useEffect(()=> {
@@ -39,7 +39,7 @@ const App = (props) => {
         <AppBar position="fixed">
           <Toolbar>
             <Typography variant="h6" color="inherit" component="div">
-            Welcome to Checkers! You are {`${user === 'r'? 'Player 1' : 'Player 2'}`}
+            Welcome to Checkers! You are {`${user === 'r'? 'Player 1' : 'Player 2'} in Room ${room}`}
             </Typography>
             <Button variant="contained">New Game</Button>
           </Toolbar>
@@ -47,10 +47,10 @@ const App = (props) => {
       </Box>
       <Toolbar />
       <Box>
-        <Board player={currentTurn} updatePlayer={setTurn} usePort={props.port} user={user}/>
+        <Board player={currentTurn} updatePlayer={setTurn} usePort={props.port} useRoom={room} user={user}/>
       </Box>
       <Box>
-        <LeaderBoard one={leaders}/>
+        <LeaderBoard info={leaders}/>
       </Box>
     </div>
   );
